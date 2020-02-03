@@ -1,0 +1,12 @@
+__pycache__
+.DS_Store
+.idea
+.vscode
+build
+*data.txt
+*.out
+*.err
+data
+.log
+log
+log.txt
