@@ -28,13 +28,7 @@ class WikipediaSpider(scrapy.Spider):
         'CONCURRENT_REQUESTS': 16,
         'CONCURRENT_REQUESTS_PER_DOMAIN': 8,
     }
-    start_urls = [
-        'https://en.wikipedia.org/wiki/University_of_California,_Riverside',
-        'https://en.wikipedia.org/wiki/Computer_science',
-        'https://en.wikipedia.org/wiki/Engineering',
-        'https://en.wikipedia.org/wiki/Algorithm',
-        'https://en.wikipedia.org/wiki/Psychology'
-    ]
+    start_urls = ['https://en.wikipedia.org/']
 
     crawledUrl = set() # Prevent duplication
 
@@ -59,7 +53,6 @@ class WikipediaSpider(scrapy.Spider):
             'urls': urls
         })
 
-        urls = urls[:5]
         for url in urls:
             next_page = response.urljoin(url)
             if next_page not in self.crawledUrl and self.isValidUrl(next_page):
