@@ -27,7 +27,13 @@ class WikipediaSpider(scrapy.Spider):
         'CONCURRENT_REQUESTS': 16,
         'CONCURRENT_REQUESTS_PER_DOMAIN': 8,
     }
-    start_urls = ['https://en.wikipedia.org/wiki/University_of_California,_Riverside']
+    start_urls = [
+        'https://en.wikipedia.org/wiki/University_of_California,_Riverside',
+        'https://en.wikipedia.org/wiki/Computer_science',
+        'https://en.wikipedia.org/wiki/Engineering',
+        'https://en.wikipedia.org/wiki/Algorithm',
+        'https://en.wikipedia.org/wiki/Psychology'
+    ]
 
     crawledUrl = set() # Prevent duplication
 
@@ -55,7 +61,7 @@ class WikipediaSpider(scrapy.Spider):
         urls = urls[:5]
         for url in urls:
             next_page = response.urljoin(url)
-            if next_page not in self.crawledUrl and self.isValidUrl(url):
+            if next_page not in self.crawledUrl and self.isValidUrl(next_page):
                 self.crawledUrl.add(next_page)
                 yield scrapy.Request(next_page, callback=self.parse)
 
@@ -68,5 +74,8 @@ class WikipediaSpider(scrapy.Spider):
     
     def isValidUrl(self, url):
         if 'File:' in url:
+            return False
+        if 'https://en' not in url:
+            # english only
             return False
         return True
