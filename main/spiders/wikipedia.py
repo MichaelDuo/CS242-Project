@@ -21,6 +21,7 @@ def prepare():
 
 class WikipediaSpider(scrapy.Spider):
     prepare()
+    counter = 0
     name = 'wikipedia'
     allowed_domains = ['wikipedia.org']
     custom_settings = {
@@ -66,9 +67,11 @@ class WikipediaSpider(scrapy.Spider):
                 yield scrapy.Request(next_page, callback=self.parse)
 
     def save(self, data):
-        filename = '%s.json' % data['header']
+        filename = '%s.json' % self.counter
+        data['filename'] = filename
         filepath = os.path.join(dataPath, filename)
         filepath = filepath.replace(" ", "_")
+        self.counter += 1
         with open(filepath, 'w') as f:
             json.dump(data, f)
     
